@@ -572,7 +572,6 @@ function renderStandings(){
       if(r.status==='upcoming')h+='<td class="rpt">&#x2014;</td>';
       else h+='<td class="rpt'+(v!=null?' scored':'')+'">'+(v!=null?v:'&#x2014;')+'</td>';
     });
-')+'</td>';
     h+='<td class="tot">'+row.tot+'</td></tr>';
   });
   h+='</tbody>';
