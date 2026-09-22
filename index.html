@@ -57,7 +57,11 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .tab:hover{color:var(--text)}.tab.on{color:var(--red);border-bottom-color:var(--red)}
 
 /* CHIPS */
-.chips{display:flex;gap:6px;padding:12px 0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.chips-outer{display:flex;align-items:center;gap:6px;padding:4px 0}
+.chip-arr{flex-shrink:0;background:none;border:1.5px solid var(--border);border-radius:99px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-2);font-size:18px;line-height:1;transition:border-color .15s,color .15s,opacity .15s;padding:0;outline:none}
+.chip-arr:hover{border-color:var(--red);color:var(--red)}
+.chip-arr:disabled{opacity:.18;cursor:default;pointer-events:none}
+.chips{display:flex;gap:6px;padding:8px 0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;flex:1;min-width:0}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex-shrink:0;background:var(--surface);border:1.5px solid var(--border);border-radius:99px;padding:5px 13px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--text-2);transition:background .12s,color .12s,border-color .12s}
 .chip:hover{border-color:var(--red);color:var(--text)}.chip.on{background:var(--red);border-color:var(--red);color:#fff}
@@ -182,7 +186,11 @@ td.tim,td.gap{font-family:'JetBrains Mono',monospace;font-size:13px;text-align:r
     <button class="tab on" data-t="standings">Season Standings</button>
     <button class="tab" data-t="results">Race Results</button>
   </div>
-  <div class="chips" id="chips"></div>
+  <div class="chips-outer">
+    <button class="chip-arr" id="chip-l" aria-label="Scroll left" disabled>&#8249;</button>
+    <div class="chips" id="chips"></div>
+    <button class="chip-arr" id="chip-r" aria-label="Scroll right">&#8250;</button>
+  </div>
   <div class="view on" id="v-standings">
     <div id="podium"></div>
     <div class="twrap"><table id="tbl-s"></table></div>
@@ -530,7 +538,25 @@ function renderChips(){
     const b=document.createElement('button');
     b.className='chip'+(st.cat===id?' on':'');
     b.textContent=lbl;
-    b.onclick=function(){st.cat=id;render();};
+    b.onclick=function(){st.cat=id;
+function initChipArrows(){
+  const chips=document.getElementById('chips');
+  const btnL=document.getElementById('chip-l');
+  const btnR=document.getElementById('chip-r');
+  function upd(){
+    btnL.disabled=chips.scrollLeft<=1;
+    btnR.disabled=chips.scrollLeft>=chips.scrollWidth-chips.clientWidth-2;
+  }
+  btnL.onclick=()=>{chips.scrollBy({left:-180,behavior:'smooth'});};
+  btnR.onclick=()=>{chips.scrollBy({left:180,behavior:'smooth'});};
+  chips.addEventListener('scroll',upd,{passive:true});
+  // Re-check after cat tabs are rendered (they affect scrollWidth)
+  chips.addEventListener('DOMSubtreeModified',upd,{once:true});
+  setTimeout(upd,100);
+}
+
+render();
+initChipArrows();};
     return b;
   };
   if(st.tab==='standings')bar.appendChild(mk('all','All'));
