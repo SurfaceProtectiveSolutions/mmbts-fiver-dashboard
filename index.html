@@ -95,7 +95,7 @@ td.rcat{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--tex
 td.rpt{font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right;color:var(--text-3);font-variant-numeric:tabular-nums}
 td.rpt.scored{color:var(--text)}
 td.tot{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
-td.cos{text-align:center;font-size:13px;color:var(--text-3)}td.cos.y{color:var(--red);font-weight:700}
+
 td.tim,td.gap{font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums}
 
 /* RACE TABS */
@@ -562,7 +562,7 @@ function renderStandings(){
   let h='<thead><tr><th style="width:32px">#</th><th>Racer</th>';
   if(isAll)h+='<th>Category</th>';
   S.races.forEach(r=>h+='<th class="th-r">'+r.name+'</th>');
-  h+='<th class="th-r">Costume</th><th class="th-r">Total</th></tr></thead><tbody>';
+  h+='<th class="th-r">Total</th></tr></thead><tbody>';
   rows.forEach((row,i)=>{
     h+='<tr class="'+(i===0?'lead':'')+'">';
     h+='<td class="pos">'+(i+1)+'</td><td class="rname">'+row.n+'</td>';
@@ -572,7 +572,7 @@ function renderStandings(){
       if(r.status==='upcoming')h+='<td class="rpt">&#x2014;</td>';
       else h+='<td class="rpt'+(v!=null?' scored':'')+'">'+(v!=null?v:'&#x2014;')+'</td>';
     });
-    h+='<td class="cos'+(row.anycos?' y':'')+'">'+(row.anycos?'+':'&#x2013;')+'</td>';
+')+'</td>';
     h+='<td class="tot">'+row.tot+'</td></tr>';
   });
   h+='</tbody>';
