@@ -538,25 +538,7 @@ function renderChips(){
     const b=document.createElement('button');
     b.className='chip'+(st.cat===id?' on':'');
     b.textContent=lbl;
-    b.onclick=function(){st.cat=id;
-function initChipArrows(){
-  const chips=document.getElementById('chips');
-  const btnL=document.getElementById('chip-l');
-  const btnR=document.getElementById('chip-r');
-  function upd(){
-    btnL.disabled=chips.scrollLeft<=1;
-    btnR.disabled=chips.scrollLeft>=chips.scrollWidth-chips.clientWidth-2;
-  }
-  btnL.onclick=()=>{chips.scrollBy({left:-180,behavior:'smooth'});};
-  btnR.onclick=()=>{chips.scrollBy({left:180,behavior:'smooth'});};
-  chips.addEventListener('scroll',upd,{passive:true});
-  // Re-check after cat tabs are rendered (they affect scrollWidth)
-  chips.addEventListener('DOMSubtreeModified',upd,{once:true});
-  setTimeout(upd,100);
-}
-
-render();
-initChipArrows();};
+    b.onclick=function(){st.cat=id;render();updChipArrows();};
     return b;
   };
   if(st.tab==='standings')bar.appendChild(mk('all','All'));
@@ -669,6 +651,28 @@ document.querySelectorAll('.tab').forEach(function(b){
 });
 
 render();
+initChipArrows();
+
+function updChipArrows(){
+  const chips=document.getElementById('chips');
+  const btnL=document.getElementById('chip-l');
+  const btnR=document.getElementById('chip-r');
+  if(!chips||!btnL||!btnR)return;
+  btnL.disabled=chips.scrollLeft<=1;
+  btnR.disabled=chips.scrollLeft>=chips.scrollWidth-chips.clientWidth-2;
+}
+
+function initChipArrows(){
+  const chips=document.getElementById('chips');
+  const btnL=document.getElementById('chip-l');
+  const btnR=document.getElementById('chip-r');
+  if(!chips||!btnL||!btnR)return;
+  btnL.addEventListener('click',function(){chips.scrollLeft-=180;updChipArrows();});
+  btnR.addEventListener('click',function(){chips.scrollLeft+=180;updChipArrows();});
+  chips.addEventListener('scroll',updChipArrows,{passive:true});
+  setTimeout(updChipArrows,150);
+}
+
 </script>
 
 <div class="credit-bar">
