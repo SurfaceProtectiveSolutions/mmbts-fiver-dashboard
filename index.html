@@ -699,8 +699,9 @@ function renderStandings(){
     if(isAll)h+='<td class="rcat">'+row.catLabel+'</td>';
     S.races.forEach(r=>{
       const v=row.r[r.id];
+      const dispV=v!=null?v+(row.cos[r.id]?S.costume:0):null;
       if(r.status==='upcoming')h+='<td class="rpt">&#x2014;</td>';
-      else h+='<td class="rpt'+(v!=null?' scored':'')+'">'+(v!=null?v:'&#x2014;')+'</td>';
+      else h+='<td class="rpt'+(v!=null?' scored':'')+'">'+(dispV!=null?dispV:'&#x2014;')+'</td>';
     });
     h+='<td class="tot">'+row.tot+'</td></tr>';
   });
